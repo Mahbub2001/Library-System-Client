@@ -61,7 +61,7 @@ function AdminDash() {
       }
       const pp = imageData.data.url;
       const finalFormData = { ...formData, image: pp };
-      const response = await fetch('http://127.0.0.1:8000/books/', {
+      const response = await fetch('https://library-system-server-nine.vercel.app/books/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

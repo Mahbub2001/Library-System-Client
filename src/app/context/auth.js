@@ -35,7 +35,7 @@ const AuthProvider = ({ children }) => {
 
   const signin = async (email, password) => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/account/login/", {
+      const res = await fetch("https://library-system-server-nine.vercel.app/account/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("lib_user");
     setUser(null);
   
-    await fetch("http://127.0.0.1:8000/account/logout/", {
+    await fetch("https://library-system-server-nine.vercel.app/account/logout/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

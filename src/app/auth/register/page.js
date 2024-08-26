@@ -47,7 +47,7 @@ function Register() {
     // console.log(image1)
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/account/register/",
+        "https://library-system-server-nine.vercel.app/account/register/",
         formData
       );
       // console.log(response.data);

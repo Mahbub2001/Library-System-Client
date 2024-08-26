@@ -33,7 +33,7 @@ const Dashboard = () => {
       if (!user) return;
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/account/profile/?user=${user}`,
+          `https://library-system-server-nine.vercel.app/account/profile/?user=${user}`,
           {
             method: "GET",
             headers: {
@@ -57,7 +57,7 @@ const Dashboard = () => {
 
     async function fetchBorrowedBooks() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/borrow_list/', {
+        const response = await fetch('https://library-system-server-nine.vercel.app/borrow_list/', {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -75,7 +75,7 @@ const Dashboard = () => {
 
     async function fetchWishlist() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/wishlist/', {
+        const response = await fetch('https://library-system-server-nine.vercel.app/wishlist/', {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -107,7 +107,7 @@ const Dashboard = () => {
 
   const confirmReturnBook = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/borrow_list/${returningBook}/`, {
+      const response = await fetch(`https://library-system-server-nine.vercel.app/borrow_list/${returningBook}/`, {
         method: 'DELETE',
         headers: {
           Authorization: `Token ${token}`,
@@ -130,7 +130,7 @@ const Dashboard = () => {
 
   const submitReview = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/reviews/', {
+      const response = await fetch('https://library-system-server-nine.vercel.app/reviews/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -166,7 +166,7 @@ const Dashboard = () => {
       name: user,
     };
     try {
-      const response = await fetch('http://127.0.0.1:8000/borrow_list/', {
+      const response = await fetch('https://library-system-server-nine.vercel.app/borrow_list/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ const Dashboard = () => {
     // return;
     
     try {
-      const response = await fetch(`http://127.0.0.1:8000/wishlist/${id}/`, {
+      const response = await fetch(`https://library-system-server-nine.vercel.app/wishlist/${id}/`, {
         method: 'DELETE',
         headers: {
           Authorization: `Token ${token}`,

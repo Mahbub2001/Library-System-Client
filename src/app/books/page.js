@@ -8,7 +8,7 @@ import categories from "@/components/CateData/CateData";
 
 // Fetch books by category and title search query
 async function fetchBooks(category, title) {
-  let apiUrl = "http://127.0.0.1:8000/books/";
+  let apiUrl = "https://library-system-server-nine.vercel.app/books/";
 
   if (category) {
     apiUrl += `?category=${category}`;
@@ -41,7 +41,7 @@ export default function Books({ searchParams }) {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/account/profile/?user=${user}`,
+          `https://library-system-server-nine.vercel.app/account/profile/?user=${user}`,
           {
             method: "GET",
             headers: {
@@ -89,7 +89,7 @@ export default function Books({ searchParams }) {
       name: user,
     };
     try {
-      const response = await fetch('http://127.0.0.1:8000/borrow_list/', {
+      const response = await fetch('https://library-system-server-nine.vercel.app/borrow_list/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ export default function Books({ searchParams }) {
         name: user,
       };
 
-      const response = await fetch(`http://127.0.0.1:8000/wishlist/`, {
+      const response = await fetch(`https://library-system-server-nine.vercel.app/wishlist/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
