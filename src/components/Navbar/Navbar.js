@@ -25,9 +25,9 @@ function Navbar() {
         <div className="px-4">
           <div className="flex items-center justify-between">
             <div className="flex shrink-0">
-              <Link aria-current="page" className="flex items-center" href="/">
+              <Link aria-current="page" className="flex items-center justify-center" href="/">
                 <img className="h-7 w-auto" src="/home.png" alt="" />
-                <p className="sr-only">Library</p>
+                <p className=" ml-2 text-sm font-extrabold">BookCrafters</p>
               </Link>
             </div>
             <div className="hidden md:flex md:items-center md:justify-center md:gap-5">
