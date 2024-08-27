@@ -117,6 +117,7 @@ function AdminDash() {
             name="description"
             value={formData.description}
             onChange={handleChange}
+            maxLength={500} 
             className="w-full p-2 border rounded"
             required
           />
@@ -185,7 +186,7 @@ function AdminDash() {
           <input
             type="file"
             name="image"
-            value={formData.image}
+            // value={formData.image}
             accept="image/*"
             onChange={handleFileChange}
             className="w-full p-2 border rounded"
