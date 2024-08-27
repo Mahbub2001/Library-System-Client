@@ -31,6 +31,7 @@ export default function Books({ searchParams }) {
   const [searchQuery, setSearchQuery] = useState(""); 
   const { token, user } = useContext(AuthContext);
   const [selectedBook, setSelectedBook] = useState(null); 
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -67,6 +68,7 @@ export default function Books({ searchParams }) {
 
   useEffect(() => {
     async function loadBooks() {
+      setLoading(true); 
       try {
         const fetchedBooks = await fetchBooks(category, searchQuery);
         if (fetchedBooks.length === 0 && category) {
@@ -78,9 +80,11 @@ export default function Books({ searchParams }) {
       } catch (error) {
         console.error("Error loading books:", error);
       }
+      setLoading(false);  
     }
     loadBooks();
-  }, [category, searchQuery]); 
+  }, [category, searchQuery]);
+  
 
   const handleBorrow = async (bookId) => {
     if(!token) {
@@ -166,12 +170,19 @@ export default function Books({ searchParams }) {
         {category ? `Books in ${categories[category - 1].title}` : "All Books"}
       </h1>
       {
-        books.length === 0 && (
+      loading ? (
+      <div className="text-center">
+        <div className="loader">Loading books...</div> 
+      </div>
+    ) : (
+      <>
+        {books.length === 0 && (
           <div className="text-center text-lg font-semibold">
             No books found.
           </div>
-        )
-      }
+        )}
+      </>
+    )}
       <div className="flex justify-center mb-6">
         <input
           type="text"
