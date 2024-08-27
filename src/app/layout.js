@@ -20,6 +20,7 @@ export default function RootLayout({ children }) {
         <body
           className={inter.className}
         >
+          <link rel="icon" href="/home.png" sizes="any" />
           <Navbar />
           <div className="min-h-screen">
           {children}

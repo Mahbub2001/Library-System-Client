@@ -6,7 +6,6 @@ import { AuthContext } from "../context/auth";
 import { toast } from "react-hot-toast";
 import categories from "@/components/CateData/CateData";
 
-// Fetch books by category and title search query
 async function fetchBooks(category, title) {
   let apiUrl = "https://library-system-server-nine.vercel.app/books/";
 
@@ -84,6 +83,10 @@ export default function Books({ searchParams }) {
   }, [category, searchQuery]); 
 
   const handleBorrow = async (bookId) => {
+    if(!token) {
+      toast.error('You need to be logged in to borrow a book');
+      return;
+    }
     const data = {
       book: bookId,
       name: user,
@@ -113,7 +116,7 @@ export default function Books({ searchParams }) {
   const handleAddToWishlist = async (bookId) => {
     try {
       if (!token) {
-        alert("You need to be logged in to add a book to your wishlist.");
+        toast.error("You need to be logged in to add a book to your wishlist.");
         return;
       }
       const data = {
@@ -155,12 +158,20 @@ export default function Books({ searchParams }) {
   const handleTitleClick = (book) => {
     setSelectedBook(book); 
   };
+  console.log(books);
 
   return (
     <div className="container mx-auto">
       <h1 className="text-center text-4xl font-bold mb-8">
         {category ? `Books in ${categories[category - 1].title}` : "All Books"}
       </h1>
+      {
+        books.length === 0 && (
+          <div className="text-center text-lg font-semibold">
+            No books found.
+          </div>
+        )
+      }
       <div className="flex justify-center mb-6">
         <input
           type="text"
@@ -216,14 +227,33 @@ export default function Books({ searchParams }) {
       {selectedBook && (
             <div className="border border-gray-300 bg-white p-6 rounded-lg">
               <h2 className="text-2xl font-semibold mb-4">{selectedBook.title}</h2>
-              <p><strong>Author:</strong> {selectedBook.author}</p>
-              <p><strong>ISBN:</strong> {selectedBook.ISBN}</p>
-              <p><strong>Published:</strong> {selectedBook.publication_date}</p>
-              <p><strong>Available:</strong> {selectedBook.availability_status ? 'Yes' : 'No'}</p>
-              <p><strong>Quantity:</strong> {selectedBook.quantity}</p>
-              <p><strong>Description:</strong> {selectedBook.description || 'No description available.'}</p>
+              <p><strong>Author:</strong> {selectedBook?.author}</p>
+              <p><strong>ISBN:</strong> {selectedBook?.ISBN}</p>
+              <p><strong>Published:</strong> {selectedBook?.publication_date}</p>
+              <p><strong>Available:</strong> {selectedBook?.availability_status ? 'Yes' : 'No'}</p>
+              <p><strong>Quantity:</strong> {selectedBook?.quantity}</p>
+              <p><strong>Average Rating:</strong> {selectedBook?.average_rating || 'No rating available'}</p>
+              <p><strong>Description:</strong> {selectedBook?.description || 'No description available.'}</p>
+
+              {/* Display reviews if they exist */}
+              <div className="mt-6">
+                <h3 className="text-xl font-semibold mb-2">Reviews</h3>
+                {selectedBook?.reviews && selectedBook?.reviews.length > 0 ? (
+                  <ul className="space-y-4">
+                    {selectedBook?.reviews.map((review, index) => (
+                      <li key={index} className="border p-4 rounded-lg bg-gray-50">
+                        <p><strong>Reviewer:</strong> {review?.user_name}</p>
+                        <p><strong>Review:</strong> {review?.review_text}</p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No reviews available.</p>
+                )}
+              </div>
             </div>
           )}
+
       </div>
       </div>
 
