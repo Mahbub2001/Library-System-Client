@@ -31,8 +31,8 @@ export default function Books({ searchParams }) {
   const [books, setBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); 
   const { token, user } = useContext(AuthContext);
+  const [selectedBook, setSelectedBook] = useState(null); 
 
-  // Fetch profile data on load
   useEffect(() => {
     const fetchProfileData = async () => {
       if (!user) return;
@@ -66,7 +66,6 @@ export default function Books({ searchParams }) {
     fetchProfileData();
   }, [user]);
 
-  // Fetch books based on category and search query
   useEffect(() => {
     async function loadBooks() {
       try {
@@ -75,13 +74,14 @@ export default function Books({ searchParams }) {
           notFound();
         } else {
           setBooks(fetchedBooks);
+          setSelectedBook(fetchedBooks[0]); 
         }
       } catch (error) {
         console.error("Error loading books:", error);
       }
     }
     loadBooks();
-  }, [category, searchQuery]); // Added searchQuery to the dependency array
+  }, [category, searchQuery]); 
 
   const handleBorrow = async (bookId) => {
     const data = {
@@ -152,14 +152,15 @@ export default function Books({ searchParams }) {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+  const handleTitleClick = (book) => {
+    setSelectedBook(book); 
+  };
 
   return (
     <div className="container mx-auto">
       <h1 className="text-center text-4xl font-bold mb-8">
         {category ? `Books in ${categories[category - 1].title}` : "All Books"}
       </h1>
-
-      {/* Search Box */}
       <div className="flex justify-center mb-6">
         <input
           type="text"
@@ -169,26 +170,21 @@ export default function Books({ searchParams }) {
           className="p-2 border border-gray-300 rounded-lg w-1/2"
         />
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 px-5">
+      <div className="grid lg:grid-cols-4 grid-cols-1 gap-10 justify-center">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 justify-center items-center lg:col-span-2">
         {books.map((book) => (
-          <div key={book.id} className="border p-4 rounded-lg">
-            {book.image && (
-              <img
-                src={book.image}
-                alt={book.title}
-                className="mt-2 w-60 h-60"
-              />
-            )}
-            <h2 className="text-xl font-semibold">{book.title}</h2>
-            <p className="text-sm">Author: {book.author}</p>
-            <p className="text-sm">ISBN: {book.ISBN}</p>
-            <p className="text-sm">Published on: {book.publication_date}</p>
-            <p className="text-sm">
-              Availability:{" "}
-              {book.availability_status ? "Available" : "Not Available"}
-            </p>
-            <p className="text-sm">Quantity: {book.quantity}</p>
+          <div
+            key={book.id}
+            className="border border-gray-400 bg-white rounded-lg flex flex-col text-center leading-snug p-2 max-w-[15rem]"
+          >
+            <img
+              src={book?.image}
+              className="w-full h-[15rem] mb-2 rounded-lg"
+              alt={book.title}
+            />
+            <h2  onClick={() => handleTitleClick(book)} className="text-gray-900 font-semibold text-sm mb-1 hover:text-indigo-600 cursor-pointer">{book.title.length >10 ? book.title.substring(0,10):book.title }</h2>
+            <p className="text-xs">Writen by <font className="font-bold">{book.author}</font> </p>
+            <div>
             <div className="flex gap-5">
               {book.availability_status ? (
                 <button
@@ -211,10 +207,26 @@ export default function Books({ searchParams }) {
               >
                 Add To Wishlist
               </button>
+              </div> 
             </div>
           </div>
         ))}
       </div>
+      <div className="lg:col-span-2">
+      {selectedBook && (
+            <div className="border border-gray-300 bg-white p-6 rounded-lg">
+              <h2 className="text-2xl font-semibold mb-4">{selectedBook.title}</h2>
+              <p><strong>Author:</strong> {selectedBook.author}</p>
+              <p><strong>ISBN:</strong> {selectedBook.ISBN}</p>
+              <p><strong>Published:</strong> {selectedBook.publication_date}</p>
+              <p><strong>Available:</strong> {selectedBook.availability_status ? 'Yes' : 'No'}</p>
+              <p><strong>Quantity:</strong> {selectedBook.quantity}</p>
+              <p><strong>Description:</strong> {selectedBook.description || 'No description available.'}</p>
+            </div>
+          )}
+      </div>
+      </div>
+
     </div>
   );
 }
